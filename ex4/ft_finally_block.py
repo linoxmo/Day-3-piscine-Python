@@ -17,34 +17,36 @@ class WaterError(GardenError):
 
 def water_plant(plant_name: str) -> None:
     message = f"Caught PlantError: Invalid plant name to water: '{plant_name}'"
-    try:
-        if not isinstance(plant_name, str):
-            raise PlantError("Plant name must be a string")
+    if not isinstance(plant_name, str):
+        raise PlantError("Plant name must be a string")
 
-        if plant_name != plant_name.capitalize():
-            raise PlantError(message)
-    except PlantError as e:
-        print(f"{e}")
-        return
+    if plant_name != plant_name.capitalize():
+        raise PlantError(message)
     print(f"Watering {plant_name}: [OK] ")
 
 
-def main() -> None:
+def test_watering_system() -> None:
     Plant = [
         "Tomato",
         "Lettuce",
         "Carrot",
-        "lettuce"
+        "lettuce",
+        "Potato"
     ]
     print("=== Garden Watering System ===")
     print("\nTesting valid plants...")
     print("Opening watering system")
-    for p in Plant:
-        water_plant(p)
-    print("Closing watering system")
+    try:
+        for p in Plant:
+            water_plant(p)
+    except PlantError as e:
+        print(e)
+        return
+    finally:
+        print("Closing watering system")
     print("\nCleanup always happens, even with errors!")
     return
 
 
 if __name__ == '__main__':
-    main()
+    test_watering_system()
